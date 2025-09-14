@@ -1,0 +1,123 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: var(--secondary-gradient);
+  font-family: var(--font-family);
+}
+
+// Global app styles with new color scheme
+app-root {
+  display: block;
+  min-height: 100vh;
+  background: var(--secondary-gradient);
+}
+
+// Additional utility classes for the app
+.app-container {
+  min-height: 100vh;
+  background: var(--secondary-gradient);
+  position: relative;
+  overflow-x: hidden;
+}
+
+// Loading animation
+.loading-spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--dim-blue-dark);
+  border-radius: 50%;
+  border-top-color: var(--bright-orange);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// Success/Error message styles
+.message {
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  margin: 1rem 0;
+  animation: slideUp 0.3s ease-out;
+
+  &.success {
+    background: var(--success-gradient);
+    color: white;
+    border: 2px solid var(--alert-green-dark);
+  }
+
+  &.error {
+    background: var(--primary-gradient);
+    color: white;
+    border: 2px solid var(--bright-orange-dark);
+  }
+
+  &.info {
+    background: linear-gradient(135deg, var(--dim-blue) 0%, var(--dim-blue-dark) 100%);
+    color: var(--dark-gray);
+    border: 2px solid var(--dim-blue-dark);
+  }
+}
+
+// Custom scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--light-gray);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bright-orange);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bright-orange-dark);
+}
+
+// Focus styles for accessibility
+*:focus-visible {
+  outline: 3px solid var(--bright-orange);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+// Print styles
+@media print {
+  .todo-app {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .btn, .todo-actions {
+    display: none !important;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  :root {
+    --bright-orange: #d40000;
+    --dim-blue: #f0f8ff;
+    --alert-green: #008000;
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

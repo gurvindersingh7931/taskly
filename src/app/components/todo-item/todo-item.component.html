@@ -1,0 +1,88 @@
+<div class="todo-item" [class.completed]="todo.completed" [class.overdue]="isOverdue()">
+  <div class="todo-content" *ngIf="!isEditing">
+    <div class="todo-header">
+      <button 
+        class="checkbox" 
+        [class.checked]="todo.completed"
+        (click)="onToggle()"
+        aria-label="Toggle todo">
+        <span class="checkmark" *ngIf="todo.completed">✓</span>
+      </button>
+      
+      <div class="todo-info">
+        <h3 class="todo-title" [class.completed-text]="todo.completed">
+          {{ todo.title }}
+        </h3>
+        <p class="todo-description" *ngIf="todo.description">
+          {{ todo.description }}
+        </p>
+        
+        <div class="todo-meta">
+          <span class="priority" [class]="getPriorityClass()">
+            <span class="priority-icon">{{ getPriorityIcon() }}</span>
+            {{ getPriorityLabel() }}
+          </span>
+          
+          <span class="due-date" *ngIf="todo.dueDate" [class.overdue]="isOverdue()">
+            📅 {{ todo.dueDate | date:'MMM d, y' }}
+            <span class="days-until" *ngIf="getDaysUntilDue() !== 0">
+              ({{ getDaysUntilDue() > 0 ? 'in ' + getDaysUntilDue() + ' days' : getDaysUntilDue() * -1 + ' days overdue' }})
+            </span>
+          </span>
+          
+          <div class="tags" *ngIf="todo.tags && todo.tags.length > 0">
+            <span class="tag" *ngFor="let tag of todo.tags">
+              #{{ tag }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="todo-actions">
+      <button class="btn btn-edit" (click)="onEdit()" title="Edit todo">
+        ✏️
+      </button>
+      <button class="btn btn-delete" (click)="onDelete()" title="Delete todo">
+        🗑️
+      </button>
+    </div>
+  </div>
+  
+  <div class="todo-edit-form" *ngIf="isEditing">
+    <div class="form-group">
+      <input 
+        type="text" 
+        [(ngModel)]="editTitle" 
+        placeholder="Todo title"
+        class="form-input"
+        #titleInput>
+    </div>
+    
+    <div class="form-group">
+      <textarea 
+        [(ngModel)]="editDescription" 
+        placeholder="Description (optional)"
+        class="form-textarea"
+        rows="3"></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label>Priority:</label>
+      <select [(ngModel)]="editPriority" class="form-select">
+        <option [value]="TodoPriority.LOW">🟢 Low</option>
+        <option [value]="TodoPriority.MEDIUM">🟡 Medium</option>
+        <option [value]="TodoPriority.HIGH">🔴 High</option>
+      </select>
+    </div>
+    
+    <div class="form-actions">
+      <button class="btn btn-save" (click)="onSave()" [disabled]="!editTitle.trim()">
+        Save
+      </button>
+      <button class="btn btn-cancel" (click)="onCancel()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>

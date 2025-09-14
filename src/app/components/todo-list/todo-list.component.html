@@ -1,0 +1,231 @@
+<div class="todo-app">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="container">
+      <h1 class="app-title">
+        Taskly
+      </h1>
+      <p class="app-subtitle">Stay organized and productive</p>
+    </div>
+  </header>
+
+  <!-- Stats Bar -->
+  <div class="stats-bar">
+    <div class="container">
+      <div class="stats">
+        <div class="stat-item">
+          <span class="stat-number">{{ stats.total }}</span>
+          <span class="stat-label">Total</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ stats.active }}</span>
+          <span class="stat-label">Active</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ stats.completed }}</span>
+          <span class="stat-label">Completed</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <!-- Search and Filters -->
+      <div class="controls-section">
+        <div class="search-bar">
+          <div class="search-input-wrapper">
+            <span class="search-icon">🔍</span>
+            <input 
+              type="text" 
+              [(ngModel)]="searchTerm" 
+              (input)="onSearchChange()"
+              placeholder="Search todos..."
+              class="search-input">
+          </div>
+        </div>
+
+        <div class="filters">
+          <div class="filter-group">
+            <label>Status:</label>
+            <div class="filter-buttons">
+              <button 
+                class="filter-btn" 
+                [class]="getFilterButtonClass(TodoStatus.ALL)"
+                (click)="setStatusFilter(TodoStatus.ALL)">
+                All
+              </button>
+              <button 
+                class="filter-btn" 
+                [class]="getFilterButtonClass(TodoStatus.ACTIVE)"
+                (click)="setStatusFilter(TodoStatus.ACTIVE)">
+                Active
+              </button>
+              <button 
+                class="filter-btn" 
+                [class]="getFilterButtonClass(TodoStatus.COMPLETED)"
+                (click)="setStatusFilter(TodoStatus.COMPLETED)">
+                Completed
+              </button>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <label>Priority:</label>
+            <div class="filter-buttons">
+              <button 
+                class="filter-btn priority-btn" 
+                [class]="getPriorityButtonClass(TodoPriority.HIGH)"
+                (click)="setPriorityFilter(TodoPriority.HIGH)">
+                🔴 High
+              </button>
+              <button 
+                class="filter-btn priority-btn" 
+                [class]="getPriorityButtonClass(TodoPriority.MEDIUM)"
+                (click)="setPriorityFilter(TodoPriority.MEDIUM)">
+                🟡 Medium
+              </button>
+              <button 
+                class="filter-btn priority-btn" 
+                [class]="getPriorityButtonClass(TodoPriority.LOW)"
+                (click)="setPriorityFilter(TodoPriority.LOW)">
+                🟢 Low
+              </button>
+              <button 
+                class="filter-btn" 
+                [class]="getPriorityButtonClass(undefined)"
+                (click)="setPriorityFilter(undefined)">
+                All Priorities
+              </button>
+            </div>
+          </div>
+
+          <button 
+            class="clear-filters-btn" 
+            *ngIf="hasActiveFilters()"
+            (click)="clearFilters()">
+            Clear Filters
+          </button>
+        </div>
+      </div>
+
+      <!-- Actions Bar -->
+      <div class="actions-bar">
+        <button 
+          class="btn btn-primary" 
+          (click)="showAddTodoForm()"
+          *ngIf="!showNewTodoForm">
+          <span class="btn-icon">➕</span>
+          Add Todo
+        </button>
+
+        <div class="bulk-actions" *ngIf="todos.length > 0">
+          <button 
+            class="btn btn-secondary" 
+            (click)="markAllComplete()"
+            [disabled]="stats.active === 0">
+            Mark All Complete
+          </button>
+          <button 
+            class="btn btn-danger" 
+            (click)="clearCompleted()"
+            [disabled]="stats.completed === 0">
+            Clear Completed
+          </button>
+        </div>
+      </div>
+
+      <!-- New Todo Form -->
+      <div class="new-todo-form" *ngIf="showNewTodoForm">
+        <div class="form-card">
+          <h3>Add New Todo</h3>
+          
+          <div class="form-group">
+            <label>Title *</label>
+            <input 
+              type="text" 
+              [(ngModel)]="newTodoTitle" 
+              placeholder="What needs to be done?"
+              class="form-input"
+              #titleInput>
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea 
+              [(ngModel)]="newTodoDescription" 
+              placeholder="Add details (optional)"
+              class="form-textarea"
+              rows="3"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Priority</label>
+            <select [(ngModel)]="newTodoPriority" class="form-select">
+              <option *ngFor="let option of priorityOptions" [value]="option.value">
+                {{ option.label }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button 
+              class="btn btn-primary" 
+              (click)="addTodo()"
+              [disabled]="!newTodoTitle.trim()">
+              Add Todo
+            </button>
+            <button 
+              class="btn btn-secondary" 
+              (click)="hideAddTodoForm()">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Todo List -->
+      <div class="todos-section">
+        <div class="todos-header" *ngIf="filteredTodos.length > 0">
+          <h2>
+            {{ filteredTodos.length }} 
+            {{ filteredTodos.length === 1 ? 'Todo' : 'Todos' }}
+            <span *ngIf="filter.status !== TodoStatus.ALL || filter.priority || searchTerm.trim()">
+              (Filtered)
+            </span>
+          </h2>
+        </div>
+
+        <div class="todos-list" *ngIf="filteredTodos.length > 0">
+          <app-todo-item 
+            *ngFor="let todo of filteredTodos; trackBy: trackByTodoId"
+            [todo]="todo"
+            (toggle)="onToggleTodo($event)"
+            (edit)="onEditTodo($event)"
+            (delete)="onDeleteTodo($event)">
+          </app-todo-item>
+        </div>
+
+        <!-- Empty States -->
+        <div class="empty-state" *ngIf="filteredTodos.length === 0 && todos.length > 0">
+          <div class="empty-icon">🔍</div>
+          <h3>No todos match your filters</h3>
+          <p>Try adjusting your search or filter criteria</p>
+          <button class="btn btn-secondary" (click)="clearFilters()">
+            Clear Filters
+          </button>
+        </div>
+
+        <div class="empty-state" *ngIf="todos.length === 0">
+          <div class="empty-icon">📝</div>
+          <h3>No todos yet</h3>
+          <p>Create your first todo to get started!</p>
+          <button class="btn btn-primary" (click)="showAddTodoForm()">
+            Add Your First Todo
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
