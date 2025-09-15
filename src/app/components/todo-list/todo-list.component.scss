@@ -12,20 +12,28 @@
   text-align: center;
   color: white;
 
-  .app-title {
-    margin: 0;
-    font-size: 3rem;
-    font-weight: 700;
+  .header-content {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
 
-    .title-icon {
-      font-size: 3.5rem;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-    }
+  .app-logo {
+    width: 48px;
+    height: 48px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+
+  .header-text {
+    text-align: left;
+  }
+
+  .app-title {
+    margin: 0;
+    font-size: 3rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
 
   .app-subtitle {
@@ -312,6 +320,14 @@
     font-size: 4rem;
     margin-bottom: 1rem;
     opacity: 0.7;
+  }
+
+  .empty-image {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.5rem auto;
+    opacity: 0.8;
+    display: block;
   }
 
   h3 {

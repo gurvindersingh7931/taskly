@@ -7,6 +7,8 @@ A modern, feature-rich todo application built with Angular 18, featuring a beaut
 ![SCSS](https://img.shields.io/badge/SCSS-Styling-pink.svg)
 ![RxJS](https://img.shields.io/badge/RxJS-Reactive%20Programming-purple.svg)
 
+Demo - https://www.youtube.com/watch?v=AAnNvCZqi44
+
 ## ✨ Features
 
 ### 🎨 **Beautiful Modern UI**

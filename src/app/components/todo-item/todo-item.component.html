@@ -19,12 +19,13 @@
         
         <div class="todo-meta">
           <span class="priority" [class]="getPriorityClass()">
-            <span class="priority-icon">{{ getPriorityIcon() }}</span>
+            <img [src]="getPriorityIconPath()" alt="Priority" class="priority-icon">
             {{ getPriorityLabel() }}
           </span>
           
           <span class="due-date" *ngIf="todo.dueDate" [class.overdue]="isOverdue()">
-            📅 {{ todo.dueDate | date:'MMM d, y' }}
+            <img src="assets/images/calendar-icon.svg" alt="Due date" class="calendar-icon">
+            {{ todo.dueDate | date:'MMM d, y' }}
             <span class="days-until" *ngIf="getDaysUntilDue() !== 0">
               ({{ getDaysUntilDue() > 0 ? 'in ' + getDaysUntilDue() + ' days' : getDaysUntilDue() * -1 + ' days overdue' }})
             </span>

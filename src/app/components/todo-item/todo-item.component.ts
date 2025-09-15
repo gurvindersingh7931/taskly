@@ -80,6 +80,19 @@ export class TodoItemComponent implements OnInit {
     }
   }
 
+  getPriorityIconPath(): string {
+    switch (this.todo.priority) {
+      case TodoPriority.HIGH:
+        return 'assets/images/priority-high.svg';
+      case TodoPriority.MEDIUM:
+        return 'assets/images/priority-medium.svg';
+      case TodoPriority.LOW:
+        return 'assets/images/priority-low.svg';
+      default:
+        return 'assets/images/priority-low.svg';
+    }
+  }
+
   getPriorityLabel(): string {
     return this.todo.priority.charAt(0).toUpperCase() + this.todo.priority.slice(1);
   }

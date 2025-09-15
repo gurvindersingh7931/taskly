@@ -2,10 +2,13 @@
   <!-- Header -->
   <header class="app-header">
     <div class="container">
-      <h1 class="app-title">
-        Taskly
-      </h1>
-      <p class="app-subtitle">Stay organized and productive</p>
+      <div class="header-content">
+        <img src="assets/images/logo.svg" alt="Taskly Logo" class="app-logo">
+        <div class="header-text">
+          <h1 class="app-title">Taskly</h1>
+          <p class="app-subtitle">Stay organized and productive</p>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -209,7 +212,7 @@
 
         <!-- Empty States -->
         <div class="empty-state" *ngIf="filteredTodos.length === 0 && todos.length > 0">
-          <div class="empty-icon">🔍</div>
+          <img src="assets/images/empty-state.svg" alt="No results found" class="empty-image">
           <h3>No todos match your filters</h3>
           <p>Try adjusting your search or filter criteria</p>
           <button class="btn btn-secondary" (click)="clearFilters()">
@@ -218,7 +221,7 @@
         </div>
 
         <div class="empty-state" *ngIf="todos.length === 0">
-          <div class="empty-icon">📝</div>
+          <img src="assets/images/empty-state.svg" alt="No todos yet" class="empty-image">
           <h3>No todos yet</h3>
           <p>Create your first todo to get started!</p>
           <button class="btn btn-primary" (click)="showAddTodoForm()">
